@@ -1,0 +1,40 @@
+.infoBox {
+  flex: 1;
+  cursor: pointer;
+}
+
+.infoBox:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.infoBox.Confirmed {
+  color: #cc1034 !important;
+  border-color: #cc1034;
+}
+
+.infoBox.Recovered {
+  color: #7dd77d !important;
+  border-color: #7dd77d;
+}
+
+.infoBox.Deaths {
+  color: #6c757d !important;
+  border-color: #6c757d;
+}
+
+.infoBox--selected {
+  border-top: 10px solid;
+}
+
+.infoBox__cases {
+  font-weight: 600;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.infoBox__total {
+  color: #111;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  margin-bottom: 15px !important;
+}
