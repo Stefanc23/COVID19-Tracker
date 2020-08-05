@@ -7,12 +7,28 @@
 .table tr {
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.table tr:hover,
+.table tr:nth-of-type(odd):hover {
+  background-color: rgba(30, 19, 122, 0.5);
+  border-color: #111;
 }
 
 .table td {
+  display: flex;
   padding: 0.5rem;
 }
 
 .table tr:nth-of-type(odd) {
   background-color: #f3f3f3;
+}
+
+.table td img {
+  margin-right: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 100%;
 }

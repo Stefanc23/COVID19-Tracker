@@ -25,6 +25,10 @@ function App() {
         .then(res => res.json())
         .then(data => setCountryInfo(data));
     };
+    getWorldwideData();
+  }, []);
+
+  useEffect(() => {
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
         .then(res => res.json())
@@ -39,10 +43,8 @@ function App() {
           setMapCountries(data);
         });
     };
-    getWorldwideData();
     getCountriesData();
     const interval = setInterval(() => {
-      getWorldwideData();
       getCountriesData();
     }, 60000);
     return () => clearInterval(interval);
@@ -50,7 +52,6 @@ function App() {
 
   const onCountryChange = value => {
     const countryCode = value;
-    console.log(countryCode);
     const url =
       countryCode === "Worldwide"
         ? "https://disease.sh/v3/covid-19/all"
@@ -70,6 +71,7 @@ function App() {
   const onCaseTypeChange = caseType => {
     setCasesType(caseType);
     setTableData(prevData => sortData(prevData, caseType));
+    console.log({ country: countryInfo });
   };
 
   return (
@@ -83,18 +85,6 @@ function App() {
             label={"Select a country"}
             onChange={onCountryChange}
           />
-          {/* <FormControl className="app__dropdown">
-            <Select
-              variant="outlined"
-              onChange={onCountryChange}
-              value={country}
-            >
-              <MenuItem value="worldwide">Worldwide</MenuItem>
-              {countries.map(country => (
-                <MenuItem value={country.value}>{country.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
         </div>
         <div className="app__stats">
           <InfoBox
@@ -130,10 +120,17 @@ function App() {
         <CardContent>
           <div className="app__information">
             <h3>Most {casesType} by country</h3>
-            <Table countries={tableData} casesType={casesType} />
-            <h3>Worldwide {casesType} graph</h3>
+            <Table
+              countries={tableData}
+              casesType={casesType}
+              onClick={onCountryChange}
+            />
+            <h3>
+              {country} {casesType} graph
+            </h3>
             <LineGraph
               classes={{ graph: "app__graph" }}
+              country={country}
               casesType={casesType}
             />
           </div>
