@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  MenuItem,
-  FormControl,
-  Select,
-  Card,
-  CardContent,
-} from "@material-ui/core";
+import { Card, CardContent } from "@material-ui/core";
+import Selector from "./Selector";
 import InfoBox from "./InfoBox";
 import Table from "./Table";
 import LineGraph from "./LineGraph";
@@ -16,7 +11,7 @@ import "leaflet/dist/leaflet.css";
 
 function App() {
   const [countries, setCountries] = useState([]);
-  const [country, setCountry] = useState("worldwide");
+  const [country, setCountry] = useState("Worldwide");
   const [countryInfo, setCountryInfo] = useState({});
   const [casesType, setCasesType] = useState("cases");
   const [tableData, setTableData] = useState([]);
@@ -53,21 +48,22 @@ function App() {
     return () => clearInterval(interval);
   }, [casesType]);
 
-  const onCountryChange = async event => {
-    const countryCode = event.target.value;
+  const onCountryChange = value => {
+    const countryCode = value;
+    console.log(countryCode);
     const url =
-      countryCode === "worldwide"
+      countryCode === "Worldwide"
         ? "https://disease.sh/v3/covid-19/all"
         : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-    await fetch(url)
+    fetch(url)
       .then(res => res.json())
       .then(data => {
         setCountry(countryCode);
         setCountryInfo(data);
-        countryCode === "worldwide"
+        countryCode === "Worldwide"
           ? setMapCenter(setMapCenter({ lat: 34.00746, lng: -40.4796 }))
           : setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-        countryCode === "worldwide" ? setMapZoom(2) : setMapZoom(5);
+        countryCode === "Worldwide" ? setMapZoom(2) : setMapZoom(5);
       });
   };
 
@@ -81,7 +77,13 @@ function App() {
       <div className="app__left">
         <div className="app__header">
           <h1>COVID-19 Tracker</h1>
-          <FormControl className="app__dropdown">
+          <Selector
+            data={[{ name: "Worldwide", value: "Worldwide" }, ...countries]}
+            value={country}
+            label={"Select a country"}
+            onChange={onCountryChange}
+          />
+          {/* <FormControl className="app__dropdown">
             <Select
               variant="outlined"
               onChange={onCountryChange}
@@ -92,7 +94,7 @@ function App() {
                 <MenuItem value={country.value}>{country.name}</MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
         </div>
         <div className="app__stats">
           <InfoBox
