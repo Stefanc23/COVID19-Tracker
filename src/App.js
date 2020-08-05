@@ -10,6 +10,7 @@ import InfoBox from "./InfoBox";
 import Table from "./Table";
 import LineGraph from "./LineGraph";
 import Map from "./Map";
+import { sortData } from "./utils";
 import "./App.css";
 import "leaflet/dist/leaflet.css";
 
@@ -21,7 +22,7 @@ function App() {
   const [tableData, setTableData] = useState([]);
   const [mapCountries, setMapCountries] = useState([]);
   const [mapCenter, setMapCenter] = useState({ lat: 34.00746, lng: -40.4796 });
-  const [mapZoom, setMapZoom] = useState(3);
+  const [mapZoom, setMapZoom] = useState(2);
 
   useEffect(() => {
     const getWorldwideData = async () => {
@@ -39,20 +40,18 @@ function App() {
               value: country.countryInfo.iso2,
             }))
           );
+          setTableData(sortData(data, casesType));
           setMapCountries(data);
-        });
-    };
-    const getTableData = async () => {
-      await fetch("https://disease.sh/v3/covid-19/countries?sort=cases")
-        .then(res => res.json())
-        .then(data => {
-          setTableData(data);
         });
     };
     getWorldwideData();
     getCountriesData();
-    getTableData();
-  }, []);
+    const interval = setInterval(() => {
+      getWorldwideData();
+      getCountriesData();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [casesType]);
 
   const onCountryChange = async event => {
     const countryCode = event.target.value;
@@ -65,9 +64,16 @@ function App() {
       .then(data => {
         setCountry(countryCode);
         setCountryInfo(data);
-        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-        setMapZoom(4);
+        countryCode === "worldwide"
+          ? setMapCenter(setMapCenter({ lat: 34.00746, lng: -40.4796 }))
+          : setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        countryCode === "worldwide" ? setMapZoom(2) : setMapZoom(5);
       });
+  };
+
+  const onCaseTypeChange = caseType => {
+    setCasesType(caseType);
+    setTableData(prevData => sortData(prevData, caseType));
   };
 
   return (
@@ -91,21 +97,21 @@ function App() {
         <div className="app__stats">
           <InfoBox
             active={casesType === "cases"}
-            onClick={e => setCasesType("cases")}
+            onClick={e => onCaseTypeChange("cases")}
             title="Confirmed"
             cases={countryInfo.todayCases}
             total={countryInfo.cases}
           />
           <InfoBox
             active={casesType === "recovered"}
-            onClick={e => setCasesType("recovered")}
+            onClick={e => onCaseTypeChange("recovered")}
             title="Recovered"
             cases={countryInfo.todayRecovered}
             total={countryInfo.recovered}
           />
           <InfoBox
             active={casesType === "deaths"}
-            onClick={e => setCasesType("deaths")}
+            onClick={e => onCaseTypeChange("deaths")}
             title="Deaths"
             cases={countryInfo.todayDeaths}
             total={countryInfo.deaths}
