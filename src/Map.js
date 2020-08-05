@@ -1,22 +1,8 @@
 import React from "react";
 import { Map as LeafletMap, TileLayer, Circle, Popup } from "react-leaflet";
 import numeral from "numeral";
+import { casesTypeColors } from "./utils";
 import "./Map.css";
-
-const casesTypeColors = {
-  cases: {
-    hex: "#cc1034",
-    multiplier: 800,
-  },
-  recovered: {
-    hex: "#7dd77d",
-    multiplier: 1200,
-  },
-  deaths: {
-    hex: "#6c757d",
-    multiplier: 2000,
-  },
-};
 
 function Map({ countries, center, zoom, casesType }) {
   const showDataOnMap = (data, casesType = "cases") =>
