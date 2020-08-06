@@ -78,7 +78,6 @@ function LineGraph({ classes, country, casesType }) {
           return response.json();
         })
         .then(data => {
-          console.log(data);
           let chartData =
             country === "Worldwide"
               ? buildChartData(data, casesType)

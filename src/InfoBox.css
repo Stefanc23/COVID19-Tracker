@@ -1,6 +1,12 @@
 .infoBox {
   flex: 1;
+  height: 120px;
   cursor: pointer;
+  text-align: center !important;
+}
+
+.infoBox .MuiCardContent-root {
+  padding: 0.5rem;
 }
 
 .infoBox:not(:last-child) {
@@ -10,20 +16,36 @@
 .infoBox.Confirmed {
   color: #cc1034 !important;
   border-color: #cc1034;
+  background-color: rgba(204, 16, 52, 0.2);
 }
 
 .infoBox.Recovered {
   color: #7dd77d !important;
   border-color: #7dd77d;
+  background-color: rgba(125, 215, 29, 0.2);
 }
 
 .infoBox.Deaths {
   color: #6c757d !important;
   border-color: #6c757d;
+  background-color: rgba(108, 117, 125, 0.2);
 }
 
 .infoBox--selected {
   border-top: 10px solid;
+}
+
+.infoBox__title {
+  display: flex;
+  justify-content: space-between;
+  color: #111 !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.infoBox__title img {
+  object-fit: contain;
+  height: 2rem;
 }
 
 .infoBox__cases {
@@ -37,4 +59,28 @@
   font-weight: 700 !important;
   font-size: 0.8rem !important;
   margin-bottom: 15px !important;
+}
+
+@media screen and (max-width: 480px) {
+  .infoBox {
+    height: 75px;
+  }
+
+  .infoBox__title {
+    font-size: 0.75rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .infoBox__title img {
+    height: 1rem;
+  }
+
+  .infoBox__cases {
+    font-size: 1.25rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .infoBox__total {
+    font-size: 0.75rem !important;
+  }
 }

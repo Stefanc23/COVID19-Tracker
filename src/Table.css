@@ -1,7 +1,11 @@
 .table {
   margin-top: 20px;
   overflow-y: scroll;
-  max-height: 475px;
+  max-height: 425px;
+}
+
+.table table {
+  width: 100%;
 }
 
 .table tr {
@@ -13,7 +17,7 @@
 
 .table tr:hover,
 .table tr:nth-of-type(odd):hover {
-  background-color: rgba(30, 19, 122, 0.5);
+  background-color: rgba(30, 19, 122, 0.5) !important;
   border-color: #111;
 }
 
@@ -31,4 +35,10 @@
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 100%;
+}
+
+@media screen and (max-width: 900px) {
+  .table {
+    height: 220px;
+  }
 }

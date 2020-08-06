@@ -15,7 +15,7 @@ function Selector({ data, value, label, ...props }) {
       options={options}
       getOptionLabel={option => option.name}
       value={value}
-      style={{ width: 300 }}
+      style={{ width: 200 }}
       onChange={(event, newValue) => {
         newValue !== null && props.onChange(newValue.name);
       }}
